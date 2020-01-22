@@ -1,8 +1,5 @@
 import pandas as pd
 from sklearn import metrics
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy import stats
 from os import listdir
 from os.path import isfile, join
 
@@ -59,6 +56,7 @@ def get_separate_metrics_arrays(folds_metrics_array):
 
 stream_pred_path = ''
 batch_pred_path = ''
+output_path = ''
 
 print('Retrieving files names from directories...')
 
@@ -79,4 +77,29 @@ stream_dfs = []
 
 print('Creating data frames with metrics for each algorithm...')
 
+stream_aps, stream_rocaucs = get_separate_metrics_arrays(stream_metrics)
+batch_aps, batch_rocaucs = get_separate_metrics_arrays(stream_metrics)
 
+stream_metrics_df = pd.DataFrame(data={'avg_prec': stream_aps, 'roc_auc': stream_rocaucs})
+batch_metrics_df = pd.DataFrame(data={'avg_prec': batch_aps, 'roc_auc': batch_rocaucs})
+
+roc_curve_df = pd.DataFrame(data={'stream_fpr': stream_metrics[0].roc_curve.fpr,
+                                  'stream_tpr': stream_metrics[0].roc_curve.tpr,
+                                  'stream_thresholds': stream_metrics[0].roc_curve.thresholds,
+                                  'batch_fpr': batch_metrics[0].roc_curve.fpr,
+                                  'batch_tpr': batch_metrics[0].roc_curve.tpr,
+                                  'batch_thresholds': batch_metrics[0].roc_curve.thresholds})
+
+pr_curve_df = pd.DataFrame(data={'stream_precision': stream_metrics[0].pr_curve.precision,
+                                 'stream_recall': stream_metrics[0].pr_curve.recall,
+                                 'stream_thresholds': stream_metrics[0].pr_curve.thresholds,
+                                 'batch_precision': batch_metrics[0].pr_curve.precision,
+                                 'batch_recall': batch_metrics[0].pr_curve.recall,
+                                 'batch_thresholds': batch_metrics[0].pr_curve.thresholds})
+
+print('Saving to files...')
+
+stream_metrics_df.to_csv(join(output_path, 'stream_metrics_1.csv'), index=False)
+batch_metrics_df.to_csv(join(output_path, 'batch_metrics_1.csv'), index=False)
+roc_curve_df.to_csv(join(output_path, 'roc_curve_1.csv'), index=False)
+pr_curve_df.to_csv(join(output_path, 'pr_curve_1.csv'), index=False)

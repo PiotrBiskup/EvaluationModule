@@ -3,6 +3,7 @@
     <words>
       <w>prec</w>
       <w>pred</w>
+      <w>rocaucs</w>
     </words>
   </dictionary>
 </component>
