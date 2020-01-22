@@ -6,6 +6,10 @@ from scipy import stats
 from os import listdir
 from os.path import isfile, join
 
+from FoldMetrics import FoldMetrics
+from PrCurve import PrCurve
+from RocCurve import RocCurve
+
 
 def get_files_names(dir_path):
     return [file for file in listdir(dir_path) if isfile(join(dir_path, file))]
@@ -18,4 +22,7 @@ def get_df_from_files(dir_path, files_names):
         data_frames.append(pd.read_csv(path, sep=" ", header=None))
     return data_frames
 
+
 def get_df_last_20_percent(data_frame):
+    return data_frame.tail(int(len(data_frame) * 0.2))
+
