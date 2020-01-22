@@ -1,5 +1,4 @@
 class PrCurve:
-    def __init__(self, precision, recall, thresholds):
+    def __init__(self, precision, recall):
         self.precision = precision
         self.recall = recall
-        self.thresholds = thresholds
