@@ -10,8 +10,7 @@ from PrCurve import PrCurve
 from RocCurve import RocCurve
 
 output_path = '/Users/pbiskup/Documents/Inz/pred/output'
-output_roc_curve_path = '/Users/pbiskup/Documents/Inz/pred/output/curves/roc'
-output_pr_curve_path = '/Users/pbiskup/Documents/Inz/pred/output/curves/pr'
+output_metrics_name = 'metrics.csv'
 
 
 def get_files_names(dir_path):
@@ -121,7 +120,7 @@ def process_pred_files(ad_num):
     batch_metrics_df.to_csv(join(output_path, bm_file_name), index=False)
 
     #  roc curve
-
+    plt.figure(figsize=(10, 7))
     plt.plot(stream_metrics[0].roc_curve.fpr, stream_metrics[0].roc_curve.tpr,
              label='stream ROC curve (area = %0.3f)' % stream_metrics[0].roc_curve.roc_auc)
 
@@ -164,6 +163,7 @@ def process_pred_files(ad_num):
     elif ad_num == 9:
         y_limit = 0.007
 
+    plt.figure(figsize=(12, 6))
     plt.plot(stream_metrics[0].pr_curve.recall, stream_metrics[0].pr_curve.precision, marker='.',
              label='stream PR curve (avg prec = %0.3f)' % stream_metrics[0].avg_prec, zorder=5, linewidth=1,
              markersize=1)
@@ -213,10 +213,11 @@ def combine_metrics_files():
         'stream_avg_prec': stream_df['avg_prec']
     })
 
-    result_df.to_csv(join(output_path, 'metrics.csv'), index=False)
+    result_df.to_csv(join(output_path, output_metrics_name), index=False)
 
 
-for x in range(1, 10):
-    process_pred_files(x)
+if __name__ == "__main__":
+    for x in range(1, 10):
+        process_pred_files(x)
 
-combine_metrics_files()
+    combine_metrics_files()
