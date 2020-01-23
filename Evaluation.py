@@ -120,23 +120,23 @@ def process_pred_files(ad_num):
     batch_metrics_df.to_csv(join(output_path, bm_file_name), index=False)
 
     #  roc curve
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(10, 6))
     plt.plot(stream_metrics[0].roc_curve.fpr, stream_metrics[0].roc_curve.tpr,
-             label='stream ROC curve (area = %0.3f)' % stream_metrics[0].roc_curve.roc_auc)
+             label='stream ROC curve (area = %0.3f)' % stream_metrics[0].roc_curve.roc_auc, linewidth=2)
 
     plt.plot(batch_metrics[0].roc_curve.fpr, batch_metrics[0].roc_curve.tpr,
-             label='batch ROC curve (area = %0.3f)' % batch_metrics[0].roc_curve.roc_auc)
+             label='batch ROC curve (area = %0.3f)' % batch_metrics[0].roc_curve.roc_auc, linewidth=2)
 
     plt.plot(random_fpr, random_tpr,
-             label='random ROC curve (area = %0.3f)' % metrics.auc(random_fpr, random_tpr))
+             label='random ROC curve (area = %0.3f)' % metrics.auc(random_fpr, random_tpr), linewidth=2)
 
     plt.plot([0, 1], [0, 1], 'k--')  # random predictions curve
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.0])
-    plt.xlabel('False Positive Rate or (1 - Specifity)')
-    plt.ylabel('True Positive Rate or (Sensitivity)')
-    plt.title('Receiver Operating Characteristic')
-    plt.legend(loc="lower right")
+    plt.xlabel('False Positive Rate or (1 - Specifity)', fontsize=16)
+    plt.ylabel('True Positive Rate or (Sensitivity)', fontsize=16)
+    plt.title('Receiver Operating Characteristic', fontsize=16)
+    plt.legend(loc="lower right", fontsize=14)
 
     plt.savefig(join(output_path, roc_curve_name))
     plt.clf()
@@ -163,22 +163,22 @@ def process_pred_files(ad_num):
     elif ad_num == 9:
         y_limit = 0.007
 
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(14, 6))
     plt.plot(stream_metrics[0].pr_curve.recall, stream_metrics[0].pr_curve.precision, marker='.',
-             label='stream PR curve (avg prec = %0.3f)' % stream_metrics[0].avg_prec, zorder=5, linewidth=1,
+             label='stream PR curve (avg prec = %0.5f)' % stream_metrics[0].avg_prec, zorder=5, linewidth=1,
              markersize=1)
 
     plt.plot(batch_metrics[0].pr_curve.recall, batch_metrics[0].pr_curve.precision, marker='.',
-             label='batch PR curve (avg prec = %0.3f)' % batch_metrics[0].avg_prec, zorder=5, linewidth=1, markersize=1)
+             label='batch PR curve (avg prec = %0.5f)' % batch_metrics[0].avg_prec, zorder=5, linewidth=1, markersize=1)
 
     plt.plot(random_recall, random_precision, marker='.',
-             label='random PR curve (avg prec = %0.3f)' % random_avg_prec, zorder=5, linewidth=1, markersize=1)
+             label='random PR curve (avg prec = %0.5f)' % random_avg_prec, zorder=5, linewidth=1, markersize=1)
 
     plt.ylim([0.0, y_limit])
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.legend(loc="upper right")
-    plt.title('Precision Recall Curve')
+    plt.xlabel('Recall', fontsize=24)
+    plt.ylabel('Precision', fontsize=24)
+    plt.legend(loc="upper right", fontsize=20)
+    plt.title('Precision Recall Curve', fontsize=24)
     plt.savefig(join(output_path, pr_curve_name))
     plt.clf()
 
